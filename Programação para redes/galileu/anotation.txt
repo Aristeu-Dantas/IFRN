@@ -1,0 +1,15 @@
+18 arquivos:
+    2 bytes > nº de metadados
+20 iniciodos metadadps
+    12bytes p(cada metadado)
+        2 bytes > id do metadado
+        2 bytes > tipo do metadado
+        4 bytes > nº repetições do dado
+        4 bytes > valor do dado
+
+
+obs: SHORT (2 bytes)
+     INT (4 bytes)
+     LONG (8 bytes)
+
+pdf xchange view

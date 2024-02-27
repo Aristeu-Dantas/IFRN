@@ -1,0 +1,35 @@
+er: https://core.telegram.org/bots/API
+
+1. Criar o bot no Aplicativo do TELEGRAM
+	- Procurar por BotFather na barra de busca
+	- Enviar o comando: /newbot
+		- Fazer as configurações adicionais,
+		  como o nome do BOT
+	- Obter o token do BOT. No caso: gbatBot
+		5979128974:AAFCrdAicJSVBnB9y90Otx3F6xzUDgeWZI0
+
+
+2. Interagir com o bot por meio de pooling. Pode ser por hook,
+   mas demanda um servidor para receber os pedidos.
+		O formato dos comandos é:
+			https://api.telegram.org/bot<TOKEN>/comando
+
+3. Obter dados sobre o BOT
+	curl https://api.telegram.org/bot5979128974:AAFCrdAicJSVBnB9y90Otx3F6xzUDgeWZI0/getMe
+		{"ok":true,"result":{"id":5979128974,"is_bot":true,"first_name":"gbatbot","username":"gbatbot","can_join_groups":true,"can_read_all_group_messages":false,"supports_inline_queries":false}}
+
+4. Obter Updates (getUpdates)
+	curl https://api.telegram.org/bot5979128974:AAFCrdAicJSVBnB9y90Otx3F6xzUDgeWZI0/getUpdates
+		{"ok":true,"result":[{"update_id":587753406, "message":{"message_id":2,"from":{"id":1536667647,"is_bot":false,"first_name":"PCF Gbat","language_code":"pt-br"},"chat":{"id":1536667647,"first_name":"PCF Gbat","type":"private"},"date":1670352381,"text":"/ola","entities":[{"offset":0,"length":4,"type":"bot_command"}]}}]}
+
+5. Obter Updates (getUpdates) a partir de um id (offset)
+	curl -H "Content-Type: application/json" -X POST https://api.telegram.org/bot5979128974:AAFCrdAicJSVBnB9y90Otx3F6xzUDgeWZI0/getUpdates --data "{\"offset\":2}"
+		{"ok":true,"result":[{"update_id":587753406,"message":{"message_id":2,"from":{"id":1536667647,"is_bot":false,"first_name":"PCF Gbat","language_code":"pt-br"},"chat":{"id":1536667647,"first_name":"PCF Gbat","type":"private"},"date":1670352381,"text":"/ola","entities":[{"offset":0,"length":4,"type":"bot_command"}]}},{"update_id":587753407, "message":{"message_id":5,"from":{"id":1536667647,"is_bot":false,"first_name":"PCF Gbat","language_code":"pt-br"},"chat":{"id":1536667647,"first_name":"PCF Gbat","type":"private"},"date":1670354084,"text":"Perfeito"}}]}
+
+6. Postar mensagens em um chat do BOT
+	curl -H "Content-Type: application/json" -X POST https://api.telegram.org/bot5979128974:AAFCrdAicJSVBnB9y90Otx3F6xzUDgeWZI0/sendMessage --data "{\"chat_id\":1536667647, \"text\":\"Tudo bem?\"}"
+		{"ok":true,"result":{"message_id":4,"from":{"id":5979128974,"is_bot":true,"first_name":"gbatbot","username":"gbatbot"},"chat":{"id":1536667647,"first_name":"PCF Gbat","type":"private"},"date":1670353978,"text":"Tudo bem?"}}
+
+7. Postar uma foto no char do BOT
+	curl -H "Content-Type: application/json" -X POST https://api.telegram.org/bot5979128974:AAFCrdAicJSVBnB9y90Otx3F6xzUDgeWZI0/sendPhoto --data "{\"chat_id\":1536667647, \"photo\":\"https://www.google.com/logos/doodles/2022/seasonal-holidays-2022-6753651837109831.3-law.gif\"}"
+		{"ok":true,"result":{"message_id":9,"from":{"id":5979128974,"is_bot":true,"first_name":"gbatbot","username":"gbatbot"},"chat":{"id":1536667647,"first_name":"PCF Gbat","type":"private"},"date":1670355931,"photo":[{"file_id":"AgACAgQAAxkDAAMJY4-b2-vlqjIUrf7agbwjDNSmGCEAAh2vMRvDKXxQUYl0dFwz8QQBAAMCAANzAAMrBA","file_unique_id":"AQADHa8xG8MpfFB4","file_size":901,"width":90,"height":36},{"file_id":"AgACAgQAAxkDAAMJY4-b2-vlqjIUrf7agbwjDNSmGCEAAh2vMRvDKXxQUYl0dFwz8QQBAAMCAANtAAMrBA","file_unique_id":"AQADHa8xG8MpfFBy","file_size":7880,"width":320,"height":128},{"file_id":"AgACAgQAAxkDAAMJY4-b2-vlqjIUrf7agbwjDNSmGCEAAh2vMRvDKXxQUYl0dFwz8QQBAAMCAAN4AAMrBA","file_unique_id":"AQADHa8xG8MpfFB9","file_size":14445,"width":500,"height":200}]}}

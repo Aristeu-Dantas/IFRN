@@ -1,0 +1,246 @@
+Um arquivo JPEG é formado por um número mágico e um 
+repetição de estruturas de dados (seções), segundo o 
+formato:
+
+    - Identificador de JPEG (2 bytes) - Fixo FF D8
+    - Seção 0
+    - Seção 1
+    - Seção 2
+    - ... (outras seções)
+    
+    /----------------------------------------------------------\
+    | FF D8 |  seção 0  |  seção 1  |  seção 2  |  .....       |
+    \----------------------------------------------------------/    
+    
+Cada seção é formada da seguinte maneira
+    Identificador de seção (2 bytes) - FF XX
+            - XX depende do tipo da seção
+    A seção em si, formada por 
+        - Tamanho da seção (2 bytes) - o número de bytes na seção
+        - Dados da seção (n - 2 bytes)* - o número de bytes de dados
+             está informado no tamanho da seção (os dois bytes 
+             anteriores)
+            
+        * Observe que se o tamanho da seção é 126 bytes, então se tem
+          2 bytes que definem o próprio tamanho, mais 124 bytes de
+          dados propriamente. O identificador da seção não conta como
+          parte da seção.
+          
+    /----------------------------------------------------------\
+    | FF XX |  tamanho (2 bytes)  | dados seção (tamanho - 2)  |
+    \----------------------------------------------------------/    
+
+Para finalidade de metadados EXIF, a seção que interessa é aquela com
+identificador FF E1. Essa seção especificamente tem a seguinte estrutura:
+        
+        - Tamanho da seção (2 bytes) - o número de bytes na seção
+        - Os dados da seção, assim organizados:
+            - EXIF Header (6 bytes) - valores fixos: 45 78 69 66 00 00
+            - TIFF Header (8 bytes), assim organizados:
+                - Endianess (2 bytes) - 49 49 (little endian)
+                                    ou  4D 4D (big endian)
+                        Esses bytes indicam como tratar agrupamentos
+                        de bytes para formar números inteiros.
+                        Nas descrições que se seguem, supõe-se big endianess                        
+                - TAG marker (2 bytes) - valor fixo: 00 2A
+                - Início de bloco de metadados (4 bytes)* - posição, 
+                                    contada a partir do início do TIFF 
+                                    header, onde iniciam um bloco de 
+                                    metadados
+                    * observe que esse valor será sempre 00 00 00 08, 
+                      pois os metadados iniciam logo depois do TIFF Header,
+                      que tem 8 bytes.
+                      Quando contado a partir do início do arquivo, esse
+                      valor 8 deve ser adicionado de 0xC (12), pois antes
+                      do TIFF Header há: O identificador JPEG (2 bytes),
+                      O identificador da seção de metadados (2 bytes), o
+                      tamanho da seção de metadados (2 bytes) e o Header
+                      EXIF (6 bytes).
+                      
+            - Bloco de metadados 0
+            - Bloco de metadados 1
+            - Bloco de metadados 2
+            - ...
+            
+        
+    /-------------------------------------------------------\
+    | Id da seção EXIF (2 bytes) - FF E1                    | 
+    | Tamanho da seção EXIF (2 bytes) - não inclui o id     | 
+    | EXIF Header (6 bytes) - 45 78 69 66 00 00             | 
+    | TIFF Header (8 bytes) - 4D 4D 00 2A 00 00 00 08       | 
+    | Bloco Metadados 1                                     | 
+    | Bloco Metadados 2                                     |
+    | ....                                                     | 
+    \-------------------------------------------------------/    
+    
+    Quando se observa um típico arquivo JPEG como um todo, 
+    têm-se:
+
+    /---------------------------------------------\
+    | FF D8 | FF E1 | Tamanho do  EXIF (2 bytes)  | 
+    | 45 78 69 66 00 00 | 4D 4D 00 2A 00 00 00 08 |
+    | Bloco Metadados 1 | Bloco Metadados 2 | ... |
+    \---------------------------------------------/    
+
+Por fim, um bloco de metadados é assim organizado:
+    - Número de metadados (2 bytes) - indica quantos metadados
+            tem nesse bloco
+    - Informação de metadados (12 bytes para cada metadado)
+    - Início do próximo bloco de metadados (4 bytes) - posição
+        contada a partir do início do TIFF header, ou seja, 
+        em referência ao início arquivo deve-se somar 0xC 
+        (12 em decimal).
+        
+    Ou seja, um bloco de metadados pode ser visto como:
+    /-------------------------------------------\
+    | Número de metadados (2 bytes)             | 
+    | Metadado 1  (12 bytes)                    | 
+    | Metadado 2  (12 bytes)                    | 
+    | Metadado 3  (12 bytes)                    | 
+    | ....                                      | 
+    | Posição próximo bloco metadados (4 bytes) | 
+    \-------------------------------------------/    
+
+Os 12 bytes de um metadado são assim organizados:
+    - identificador do metadado (2 bytes) - Há uma
+        tabela em https://exiftool.org/TagNames/EXIF.html
+        com a lista do significados dos identificadores.  
+        Alguns deles são: 
+            0x0100 - largura da imagem 
+            0x0101 - altura da imagem 
+            0x010F - fabricante da câmera
+            0x8769 - metadados adicionais de EXIF 
+            0x8825 - informações de GPS
+    - O tipo do metadado (2 bytes) - caracteriza como
+        obter o metadado. Por exemplo, a largura é um
+        número inteiro, o fabricante é um string. 
+        Vide discussão mais adiante. Os principais 
+        tipos são:
+            0x0001 - byte (inteiro de um 1 byte)
+            0x0002 - string
+            0x0003 - unsigned short (inteiro de 2 bytes)
+            0x0004 - unsigned long (inteiro de 4 bytes) 
+            0x0005 - unsigned rational ou fração (dois 
+                        inteiros de 4 bytes cujo valor é 
+                        obtido dividindo o primeiro pelo 
+                        segundo) 
+    - O número de repetições do valor (4 bytes) - Alguns 
+            tipos, como string, demandam repetições. Assim, 
+            um texto como "samsung" é do tipo 2 (string)
+            com 6 repetições.
+    - O valor propriamente (4 bytes) - representa o valor
+            associado ao metadado. Dependendo do tipo esse
+            valor tem uma interpretação diferente. Para um
+            short (2 bytes), esses dois bytes devem ser 
+            combinados para formar um inteiro (big endian).
+            
+            Alguns tipos requerem atenção especial:
+                string - o valor é uma posição (relativa
+                    ao início do TIFF Header, onde encontrar
+                    o texto. Lembre-se, para chegar na posição
+                    no arquivo, deve-se somar 0xC (12 em decimal)
+                    
+                rational - o valor é uma posição (relativa ...)
+                    onde estão os dois inteiros (de 4 bytes cada) 
+                    que devem ser divididos para chegar ao valor.
+                        
+            Alguns tipos de metadados, remetem a outro bloco de
+            metadados. Por exemplo, as informações de GPS são 
+            formadas por vários metadados. Assim, o valor do 
+            metadado 0x8825 tem no seu valor a posição de um
+            outro "bloco de metadados", que segue o mesmo formato
+            (2 bytes para número de metadados + 12 bytes por metadado)
+            A lista dos id de metadados associados a GPS está
+            em http://web.mit.edu/graphics/src/Image-ExifTool-6.99/html/TagNames/GPS.html
+            
+            Por fim, alguns metadados têm uma composição do valor
+            aparentente estranho. É o caso da latitude e longitude.
+            O tipo deles é 5 (fração) com três repetições. Isso 
+            ocorre porque ambos são formados por grau, minuto, segundo.
+            Portanto, há três repetições de pares de 4 bytes;
+            o primeiro par, após a divisão, representa o grau, 
+            o segundo, o minuto, e o terceiro o segundo. 
+            
+Assim, a seção de metadados pode ser vista assim:
+
+    /-------------------------------------------------------\
+    | Id da seção EXIF (2 bytes) - FF E1                    | 
+    | Tamanho do  EXIF (2 bytes) - não inclui o id da seção | 
+    | EXIF Header (6 bytes) - 45 78 69 66 00 00             | 
+    | TIFF Header (8 bytes) - 4D 4D 00 2A 00 00 00 08       | 
+    | Número de metadados no bloco 1 (2 bytes)              | 
+    |     Metadado 1 no bloco de metadados 1 (12 bytes)     | 
+    |     Metadado 2 no bloco de metadados 1 (12 bytes)     | 
+    |     Metadado 3 no bloco de metadados 1 (12 bytes)     | 
+    |     ....                                              | 
+    | Posição do próximo bloco de metadados (4 bytes)       | 
+    | ....                                                  |
+    | Número de metadados no bloco 2 (2 bytes)              | 
+    |     Metadado 1 no bloco de metadados 2 (12 bytes)     | 
+    |     Metadado 2 no bloco de metadados 2 (12 bytes)     | 
+    |     Metadado 3 no bloco de metadados 2 (12 bytes)     | 
+    | Posição do próximo bloco de metadados (4 bytes)       | 
+    | ....                                                  |
+    \-------------------------------------------------------/    
+
+Em mais detalhes:
+
+    /-------------------------------------------------------\
+    | Id da seção EXIF (2 bytes) - FF E1                    | 
+    | Tamanho da seção EXIF (2 bytes) - não inclui o id     | 
+    | EXIF Header (6 bytes) - 45 78 69 66 00 00             | 
+    | TIFF Header (8 bytes) - 4D 4D 00 2A 00 00 00 08       |
+    | Número de metadados no bloco 1 (2 bytes)              | 
+    |     Id do metadado 1 no bloco 1 (2 bytes)             | 
+    |     Tipo do metadado 1 no bloco 1 (2 bytes)           | 
+    |     Repetições do metadado 1 no bloco 1 (4 bytes)     |
+    |     Valor do metadado 1 no bloco 1 (2 bytes)          | 
+    |                                                       |
+    |     Id do metadado 2 no bloco 1 (2 bytes)             | 
+    |     Tipo do metadado 2 no bloco 1 (2 bytes)           | 
+    |     Repetições do metadado 2 no bloco 1 (4 bytes)     |
+    |     Valor do metadado 2 no bloco 1 (2 bytes)          |
+    |                                                       |    
+    |     Id do metadado 3 no bloco 1 (2 bytes)             | 
+    |     Tipo do metadado 3 no bloco 1 (2 bytes)           | 
+    |     Repetições do metadado 3 no bloco 1 (4 bytes)     |
+    |     Valor do metadado 3 no bloco 1 (2 bytes)          | 
+    |     ....                                              | 
+    | Posição do próximo bloco de metadados (4 bytes)       | 
+    | ....                                                  | 
+    | Número de metadados no bloco 2 (2 bytes)              | 
+    |     Id do metadado 1 no bloco 2 (2 bytes)             | 
+    |     Tipo do metadado 1 no bloco 2 (2 bytes)           | 
+    |     Repetições do metadado 1 no bloco 2 (4 bytes)     |
+    |     Valor do metadado 1 no bloco 2 (2 bytes)          | 
+    |                                                       |
+    |     Id do metadado 2 no bloco 2 (2 bytes)             | 
+    |     Tipo do metadado 2 no bloco 2 (2 bytes)           | 
+    |     Repetições do metadado 2 no bloco 2 (4 bytes)     |
+    |     Valor do metadado 2 no bloco 2 (2 bytes)          |
+    |     ....                                              | 
+    | Posição do próximo bloco de metadados (4 bytes)       | 
+    | ....                                                  | 
+    \-------------------------------------------------------/    
+
+    Quando se observa um típico arquivo JPEG como um todo, 
+    têm-se:
+
+    /---------------------------------------------\
+    | FF D8 | FF E1 | Tamanho do  EXIF (2 bytes)  | 
+    | 45 78 69 66 00 00 | 4D 4D 00 2A 00 00 00 08 |
+    | 00 03                                       | - Três metadados no bloco 1 
+    |   01 00 00 03 00 00 00 01 0F C0 00 00       |     id:    0x0100 (largura imagem)
+    |                                             |     tipo:  0x0003 (short 2 bytes) 
+    |                                             |     reps:  0x0001 (só um valor) 
+    |                                             |     valor: 0x0FC0 (4032) 
+    |   01 0F 00 02 00 00 00 08 00 00 00 AA       |     id:    0x010F (fabricante cam)
+    |                                             |     tipo:  0x0002 (string) 
+    |                                             |     reps:  0x0008 (8 caracters) 
+    |                                             |     valor: 0xAA+0xC (pos do str no arquivo) 
+    |   88 25 00 04 00 00 00 01 00 00 03 1E       |     id:    0x8825 (Info de GPS)
+    |                                             |     tipo:  0x0004 (long 4 bytes) 
+    |                                             |     reps:  0x0001 (só um valor) 
+    |                                             |     valor: 0x31E+0C (pos do bloco 
+    |   ....                                      |             de metadados de GPS no arquivo 
+    \---------------------------------------------/    
