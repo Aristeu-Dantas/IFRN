@@ -1,0 +1,14 @@
+Para mim:
+NN = 94
+YY =  24
+Para você:
+NN = 24
+YY = 94
+
+eth1@if40661
+
+
+fe80::a8bb:ccff:fe01:
+fe80:0:0:0:a8bb:ccff:fe01
+f.1.e.f.f.f.c.c.b.b.8.a.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f
+
