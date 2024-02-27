@@ -1,0 +1,25 @@
+calculando o rendimento do motor.
+
+
+η = (potencia de saida / potencia de entrada) * 100%
+
+potencia de entrada é a potencia fornecida ao motor (108 kW) e a potencia de saida é a potência entregue no eixo (10 HP), convertendo para watts:
+
+1 HP = 746 W
+10 HP = 10 * 746 W = 7460 W
+
+calculando o rendimento:
+
+η = (7460 W / 108,000 W) * 100%
+η = (0.06888) * 100%
+η ≈ 6.88%
+
+calculando a corrente nos enrolamentos da máquina.
+
+Potência (P) = Tensão (V) * Corrente (I)
+
+108,000 W = 100 V * I
+I = 108,000 W / 100 V
+I = 1080 A
+
+A corrente nos enrolamentos da máquina é de 1080 amperes (A).

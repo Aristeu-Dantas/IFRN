@@ -1,0 +1,51 @@
+a) Qual é a corrente elétrica necessária para alimentar esta máquina se ela opera em 110 V?
+
+1 HP = 746 W
+10 HP = 10 * 746 W = 7460 W
+
+Corrente (I) = Potência (P) / Tensão (V)
+I = 7460 W / 110 V ≈ 67.82 A
+
+a corrente elétrica é aproximadamente 67.82 amperes
+
+b) Caso fossem realizadas manutenções periódicas no motor de modo a elevar o seu rendimento para 90%, qual seria a corrente necessária para que ele disponibilizasse a mesma potência mecânica na saída?
+
+Potência de Saída = Rendimento * Potência de Entrada
+Potência de Saída = 0.60 * 7460 W ≈ 4476 W
+
+Potência de Entrada = Potência de Saída / Rendimento
+Potência de Entrada = 4476 W / 0.90 ≈ 4973.33 W
+
+Corrente (I) = Potência de Entrada / Tensão (V)
+I = 4973.33 W / 110 V ≈ 45.21 A
+
+com um rendimento de 90%, a corrente é aproximadamente 45.21 amperes
+
+c) Sabendo que o kW de energia custa R$ 0,40 por hora, qual seria a economia de energia (em reais) na conta mensal com este aumento de rendimento, se o motor citado funciona 8 horas por dia, considerando que 1 mês tem 30 dias?
+
+Potência (em kW) = Potência (em W) / 1000
+Potência (em kW) = 4476 W / 1000 = 4.476 kW
+-------------------------------------------------------------------
+Consumo diário = Potência (em kW) * Horas de Funcionamento
+Consumo diário = 4.476 kW * 8 horas = 35.808 kWh
+-------------------------------------------------------------------
+Consumo mensal = Consumo diário * Dias no mês
+Consumo mensal = 35.808 kWh * 30 dias = 1,074.24 kWh
+
+Custo mensal antes da manutenção = Consumo mensal * Custo por kWh
+Custo mensal antes da manutenção = 1,074.24 kWh * R$ 0.40/kWh = R$ 429.70
+-------------------------------------------------------------------
+Potência (em kW) = 4973.33 W / 1000 = 4.973 kW
+
+Consumo diário = 4.973 kW * 8 horas = 39.784 kWh
+
+Consumo mensal = 39.784 kWh * 30 dias = 1,193.52 kWh
+
+Custo mensal após a manutenção = 1,193.52 kWh * R$ 0.40/kWh = R$ 477.41
+
+A economia de energia mensal com o aumento de rendimento é:
+
+Economia = Custo mensal antes da manutenção - Custo mensal após a manutenção
+Economia = R$ 429.70 - R$ 477.41 = -R$ 47.71
+
+a economia de energia mensal com o aumento de rendimento é de R$ 47.71, o que significa que a conta mensal será reduzida em R$ 47.71.

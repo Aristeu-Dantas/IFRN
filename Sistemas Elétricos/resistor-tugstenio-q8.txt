@@ -1,0 +1,34 @@
+utilizando a formula resistência elétrica (R), potência elétrica (P), tensão elétrica (V) e coeficiente de temperatura (α) do material
+
+R = (V^2) / P
+
+utilizando a formula de variação da resistência com a temperatura
+
+ΔR = R0 * α * ΔT
+
+ΔR é a variação da resistência elétrica
+R0 é a resistência elétrica em temperatura ambiente
+α é o coeficiente de temperatura do material
+ΔT é a variação de temperatura
+
+a potência é igual a P = V^2 / R, para que a potência máxima seja de 110 W, utilizamos a formula
+
+110 W = V^2 / R
+
+encontrando o valor de V que é a tensão elétrica
+
+V = sqrt(P * R)
+
+calculando a variação da resistência por causa da mudança de temperatura
+
+ΔT = 200ºC - 20ºC = 180ºC
+
+ΔR = R0 * α * ΔT
+
+calculando a resistência elétrica final a 200ºC
+
+Rf = R0 + ΔR
+
+agora que temos a resistência elétrica Rf e a tensão elétrica V, utilizamos fórmula da resistência elétrica (R = ρ * (L / A)) para encontrar o comprimento do fio de Tungstênio L, assumindo que as dimensões do fio são desprezíveis. A área da seção transversal A é constante, pois as dimensões do fio são consideradas constantes.
+
+L = (Rf * A) / ρ
