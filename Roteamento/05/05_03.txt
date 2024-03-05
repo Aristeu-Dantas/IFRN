@@ -1,0 +1,20 @@
+#Entrar no modo configuraçã "configure terminal" ou "conf t"
+
+#Entrar na configuração da FastEthernet 0 interface FastEthernet 0
+
+#Retira a interface do modo shutdown (ativa) no shutdown
+
+#Configura o ip da interface ip address 10.4.0.1 255.255.0.0
+
+#Sair da conf da interface "exit"
+
+#Entrar na config da porta Serial 0 interface Serial 0
+
+#Configure o ip da interface "ip address 192.168.0.2 255.255.255.252"
+
+#Retire a interface do modo shutdown (ativa) no modo shutdown "no shutdown"
+
+#Sair da conf da interface "exit"
+
+#Sair do modo de conf "exit"
+
