@@ -1,0 +1,15 @@
+Alterei os adapaptadores do alpine linux.
+Fiz as conexões.
+Configurei o eth1 do alpine linux.
+Atualizei no terminal alpine e executei o comando udhcpc -i eth1.
+apk update
+apk search snmp
+apk add <pacote>
+configuração do roteador
+conf t
+ip address 192.168.0.2  255.255.255.0
+exit
+snmp-server comunity public RO
+exit
+exit
+wr
