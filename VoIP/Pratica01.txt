@@ -1,4 +1,13 @@
-ssh aristeuif@52.170.234.109
+# Prática SIP
+
+
+Para a prática SIP (reprodução das atividades realizadas nos momentos de aula) basta: 
+- Realizar as configurações (de acordo com os modelos) no sip.conf, extensions.conf e rtp.conf. 
+- Realizar as configurações de liberação de portas TCP/UDP (5060, 8000, 19000-20000). 
+- Utilizar a numeração de ramais correta.
+
+Todas estas informações estão disponíveis aqui no classroom.
+Ao final deve ser possível realizar uma ligação entre dois ramais "seus".
 
 **********SIP.CONF**********
 [general]
