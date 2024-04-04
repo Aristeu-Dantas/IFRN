@@ -1,0 +1,13 @@
+# Comandos Alpine - Trap
+
+apk update
+apk add iptables openrc net-snmp net-snmp-tools
+rc-status
+touch /run/openrc/softlevel
+#editar  /etc/init.d/snmptrapd
+#na terceira linha substituir /dev/null por  /var/log/snmptrapd.log
+vi /etc/init.d/snmptrapd
+rc-service snmptrapd stop
+rc-service snmptrapd start
+ip route add 192.168.1.0/24 via 192.168.0.2
+iptables -t nat -A POSTROUTING -s 192.168.0.0/23 -j MASQUERADE
