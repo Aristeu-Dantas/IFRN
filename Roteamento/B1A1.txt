@@ -4,9 +4,9 @@ Sub-rede 2: 192.168.21.64/25 (62 hosts)
 Sub-rede 3: 192.168.21.128/25 (48 hosts)
 
 sub-redes atribuídas aos switches
-Sw1: 192.168.21.0/25
-Sw2: 192.168.21.64/25
-Sw3: 192.168.21.128/25
+Sw1: 192.168.21.128/26		255.255.255.128 = 25
+Sw2: 192.168.21.192/27		255.255.255.224 = 27
+Sw3: 192.168.21.0/25		255.255.255.128 = 25
 
 IPs
 Sw1:
@@ -19,5 +19,14 @@ Sw3:
 Endereço IP do roteador: 192.168.21.129
 Endereço IP de um host: 192.168.21.130
 
+Device# configure terminal
+Device(config)# router rip
+Device(config-router)# network 10.1.1.0
+Device(config-router)# neighbor 10.1.1.2
+Device(config-router)# offset-list 98 in 1 Ethernet 1/0
+Device(config-router)# timers basic 1 2 3 4
+Device(config-router)# end
+
 **COMANDOS CONFIGURAÇÃO RIP**
 https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_rip/configuration/15-mt/irr-15-mt-book/irr-cfg-info-prot.html?authuser=2
+https://www.geeksforgeeks.org/routing-information-protocol-rip/?authuser=2
