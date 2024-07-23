@@ -1,0 +1,23 @@
+blocos de IPs
+Sub-rede 1: 192.168.21.0/25 (62 hosts)
+Sub-rede 2: 192.168.21.64/25 (62 hosts)
+Sub-rede 3: 192.168.21.128/25 (48 hosts)
+
+sub-redes atribuídas aos switches
+Sw1: 192.168.21.0/25
+Sw2: 192.168.21.64/25
+Sw3: 192.168.21.128/25
+
+IPs
+Sw1:
+Endereço IP do roteador: 192.168.21.1
+Endereço IP de um host: 192.168.21.10
+Sw2:
+Endereço IP do roteador: 192.168.21.65
+Endereço IP de um host: 192.168.21.70
+Sw3:
+Endereço IP do roteador: 192.168.21.129
+Endereço IP de um host: 192.168.21.130
+
+**COMANDOS CONFIGURAÇÃO RIP**
+https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_rip/configuration/15-mt/irr-15-mt-book/irr-cfg-info-prot.html?authuser=2
