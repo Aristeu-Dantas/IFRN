@@ -1,0 +1,17 @@
+#### Definição de ID e propagação de rota padrão ####conf t
+router ospf 1
+router-id 111.111.111.111  #Define o ID
+default-information originate
+exit
+
+
+#### Colocar senha p acesso remoto ####conf t
+line vty 0 15
+password q1w2e3r4 #define a senha para acesso remoto
+login
+exit
+
+
+#### Senha de enable ####
+conf t
+enable password elbane #senha de enable
