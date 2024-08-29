@@ -1,0 +1,9 @@
+Network Address Translation
+
+
+The IP Network Address Translator (NAT)
+https://www.rfc-editor.org/rfc/rfc1631
+
+
+Traditional IP Network Address Translator (Traditional NAT)
+https://www.rfc-editor.org/rfc/rfc3022
