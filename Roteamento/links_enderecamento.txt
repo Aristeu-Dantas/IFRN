@@ -1,0 +1,11 @@
+Revisão: Classes de Endereçamento e Mascara
+
+
+Curso de Endereçamento IP
+https://www.youtube.com/playlist?list=PLAp37wMSBouCU49LV0qFbItufigjYk-sp
+
+Ficha informativa de sub-redes – Máscara de sub-rede 24, 30, 26, 27, 29 e outras referências de redes CIDR de endereços IP
+https://www.freecodecamp.org/portuguese/news/ficha-informativa-de-sub-redes-mascara-de-sub-rede-24-30-26-27-29/?authuser=3
+
+
+http://www.inf.ufes.br/~zegonc/material/Redes_de_Computadores/VLSM%20e%20CIDR.pdf?authuser=3
