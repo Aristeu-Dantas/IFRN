@@ -1,0 +1,50 @@
+rede 10.21.11.0/24
+
+rede 10.21.11.0/28
+mask 255.255.255.240
+16 redes 16 ips
+
+R5
+fas0 ip address 10.21.11.50 255.255.255.240
+
+router ospf 1
+network 10.21.11.48 0.0.0.15 area 22
+##################################
+R2
+interface FastEthernet0
+ ip address 10.21.11.49 255.255.255.240
+
+interface Serial0
+ ip address 10.21.11.2 255.255.255.240
+
+interface Serial1
+ ip address 10.21.11.34 255.255.255.240
+
+router ospf 1
+ network 10.21.11.0 0.0.0.15 area 0
+ network 10.21.11.32 0.0.0.15 area 0
+ network 10.21.11.48 0.0.0.15 area 22
+####################################
+R1
+interface Serial0
+ ip address 10.21.11.1 255.255.255.240
+!
+interface Serial1
+ ip address 10.21.11.17 255.255.255.240
+!
+router ospf 1
+ network 10.21.11.0 0.0.0.15 area 0
+ network 10.21.11.16 0.0.0.15 area 0
+####################################
+
+R3
+interface Serial0
+ ip address 10.21.11.18 255.255.255.240
+!
+interface Serial1
+ ip address 10.21.11.33 255.255.255.240
+
+router ospf 1
+ log-adjacency-changes
+ network 10.21.11.16 0.0.0.15 area 0
+ network 10.21.11.32 0.0.0.15 area 0
