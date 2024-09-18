@@ -1,0 +1,15 @@
+10.24.24.163
+20001
+30001
+
+onf t
+router bgp 2021
+bgp   router-id 10.21.21.33
+bgp log-neighbor-changes
+neighbor 192.168.0.2 remote-as 10.21.21.34
+address-family ipv4 unicast
+neighbor 192.168.0.2 activate
+network 10.21.21.17 mask 255.255.255.240
+exit-address-family
+exit
+exit
