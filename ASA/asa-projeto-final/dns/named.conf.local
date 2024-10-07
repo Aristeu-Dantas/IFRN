@@ -1,0 +1,11 @@
+zone "ifrn.asa.br" {
+	type master;
+	file "/etc/bind/ifrn.asa.br";
+	allow-transfer {0.0.0.0; };
+};
+
+zone "par.ifrn.asa.br" {
+	type master;
+	file "/etc/bind/par.ifrn.asa.br";
+	allow-transfer {0.0.0.0; };
+};
